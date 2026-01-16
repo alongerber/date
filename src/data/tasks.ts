@@ -1,7 +1,10 @@
 /**
- * Tasks Data - משימות לשלבים 1-5
+ * משימות - גרסה משמעותית
  *
- * משימות פיזיות שדורשות אישור של בן/בת הזוג
+ * כל משימה חייבת להיות:
+ * 1. לא טריוויאלית (לא "חבק 20 שניות")
+ * 2. יוצרת רגע של בחירה או פגיעות
+ * 3. בלתי נשכחת
  */
 
 export interface Task {
@@ -12,116 +15,136 @@ export interface Task {
   textMale?: string;
   textFemale?: string;
   requiresConfirmation: boolean;
-  intensity?: 'soft' | 'medium' | 'spicy'; // רק לשלב 5
+  intensity?: 'soft' | 'medium' | 'spicy';
 }
 
 export const tasks: Task[] = [
-  // שלב 1 - רגע לפני שנפגשנו (8 פריטים, 30% משימות = ~2-3)
+  // ════════════════════════════════════════════
+  // שלב 1 - "רגע לפני שנפגשנו"
+  // 2-3 משימות
+  // ════════════════════════════════════════════
+
   {
     id: 't1_1',
     stage: 1,
     difficulty: 1,
-    text: 'ספר/י ל{partner} משהו שאהבת לעשות לפני שהכרתם ולא עשית כבר הרבה זמן.',
+    text: 'פתח את הגלריה בטלפון, מצא תמונה מלפני שהכרתם, הראה ל{partner} וספר מה עבר לך בראש כשצולמה.',
     requiresConfirmation: true,
   },
   {
     id: 't1_2',
     stage: 1,
     difficulty: 2,
-    text: 'תראה/י ל{partner} תמונה מהתקופה לפני שהכרתם וספר/י מה עבר לך בראש כשצולמת.',
+    text: 'תאר ל{partner} את הרגע המדויק שבו הבנת שאתה נופל. לא "מתי התאהבת" - הרגע עצמו.',
     requiresConfirmation: true,
   },
 
-  // שלב 2 - הרמת כוסית (8 פריטים, 60% משימות = ~5)
+  // ════════════════════════════════════════════
+  // שלב 2 - "הרמת כוסית"
+  // 5 משימות
+  // ════════════════════════════════════════════
+
   {
     id: 't2_1',
     stage: 2,
     difficulty: 1,
-    text: 'קחו צ׳ופצ׳יק ביחד. מי שמסיים אחרון שותה עוד אחד.',
+    text: 'הסתכלו אחד לשנייה בעיניים 60 שניות מלאות. בלי לדבר, בלי לצחוק, בלי להסתכל הצידה. מי ששובר קודם - שותה.',
     requiresConfirmation: true,
   },
   {
     id: 't2_2',
     stage: 2,
     difficulty: 1,
-    text: 'הסתכלו אחד לשנייה בעיניים 30 שניות בלי לדבר. בלי לצחוק.',
+    text: 'פתח את ההודעות האחרונות שלך עם {partner}. קרא בקול את ההודעה האחרונה ששלחת שהיא לא עניינית.',
     requiresConfirmation: true,
   },
   {
     id: 't2_3',
     stage: 2,
-    difficulty: 1,
-    text: 'תגיד/י ל{partner} שלושה דברים שאת/ה אוהב/ת בו/בה שלא קשורים לאיך שהוא/היא נראה.',
+    difficulty: 2,
+    text: 'תן ל{partner} לבחור שיר. תרקדו יחד את כל השיר - גם אם זה מביך, גם אם אתם לא יודעים לרקוד.',
     requiresConfirmation: true,
   },
   {
     id: 't2_4',
     stage: 2,
     difficulty: 2,
-    text: 'עשו יחד סלפי שמתאר את הזוגיות שלכם עכשיו. בלי לדבר על זה קודם.',
+    text: 'צלמו סלפי ביחד עכשיו. לפני שאתם מסתכלים עליו, כל אחד ינחש: מה יהיה הדבר הראשון ש{partner} יגיד על התמונה?',
     requiresConfirmation: true,
   },
   {
     id: 't2_5',
     stage: 2,
     difficulty: 2,
-    text: 'חבק/י את {partner} לפחות 20 שניות. בלי לדבר.',
+    text: 'אמור ל{partner} שלושה דברים שאתה אוהב בו/בה - שלא קשורים למראה, להצלחות, או לדברים שהוא/היא עושה בשבילך.',
     requiresConfirmation: true,
   },
 
-  // שלב 3 - דברים שלא אומרים בקול (8 פריטים, 50% משימות = 4)
+  // ════════════════════════════════════════════
+  // שלב 3 - "דברים שלא אומרים בקול"
+  // 4 משימות
+  // ════════════════════════════════════════════
+
   {
     id: 't3_1',
     stage: 3,
     difficulty: 2,
-    text: 'תגיד/י ל{partner} משהו שאתה מתבייש להגיד בדרך כלל. מתחיל ב"אני מודה ש..."',
+    text: 'כתוב הודעה ל{partner} שלא היית שולח בדרך כלל. משהו שאתה חושב ולא אומר. הקרא בקול.',
     requiresConfirmation: true,
   },
   {
     id: 't3_2',
     stage: 3,
     difficulty: 2,
-    text: 'כתוב/י הודעה ל{partner} שאת/ה לא היית שולח/ת בדרך כלל. תקריא/י בקול.',
+    text: 'השלם את המשפט בקול: "אני מצטער/ת על..." - על משהו שמעולם לא התנצלת עליו.',
     requiresConfirmation: true,
   },
   {
     id: 't3_3',
     stage: 3,
     difficulty: 3,
-    text: 'ספר/י ל{partner} על רגע שהיית צריך/ה אותו/ה ולא אמרת.',
+    text: 'ספר ל{partner} על רגע שהיית צריך אותו/ה ולא אמרת. תאר את הרגע, לא רק את העובדה.',
     requiresConfirmation: true,
   },
   {
     id: 't3_4',
     stage: 3,
     difficulty: 3,
-    text: 'תאר/י מה את/ה מרגיש/ה עכשיו בשלוש מילים בלבד. הסבר/י למה.',
+    text: 'יש לך 30 שניות לומר ל{partner} משהו שאתה תמיד רוצה להגיד אבל תמיד עוצר את עצמך. הטיימר רץ - עכשיו.',
     requiresConfirmation: true,
   },
 
-  // שלב 4 - מלחמת הגירסאות (8 פריטים, 20% משימות = ~2)
+  // ════════════════════════════════════════════
+  // שלב 4 - "מלחמת הגירסאות"
+  // 2 משימות
+  // ════════════════════════════════════════════
+
   {
     id: 't4_1',
     stage: 4,
     difficulty: 2,
-    text: 'חקה/י את {partner} כשהוא/היא כועס/ת. תן/י לו/לה לתקן אותך.',
+    text: 'בחרו אירוע מהעבר שזוכרים אחרת. כל אחד מספר את הגרסה שלו - דקה אחת, בלי הפרעות. אחר כך: מי צודק?',
     requiresConfirmation: true,
   },
   {
     id: 't4_2',
     stage: 4,
-    difficulty: 2,
-    text: 'תגיד/י ל{partner} במה הוא/היא צודק/ת לגמרי בריב האחרון שלכם.',
+    difficulty: 3,
+    text: 'חקה את {partner} כשהוא/היא כועס/ת עליך. אחרי זה, {partner} יתקן אותך.',
     requiresConfirmation: true,
   },
 
-  // שלב 5 - טמפרטורה עולה (8 פריטים, 70% משימות = ~5-6)
-  // Soft intensity
+  // ════════════════════════════════════════════
+  // שלב 5 - "טמפרטורה עולה"
+  // 5-6 משימות לכל רמת עוצמה
+  // ════════════════════════════════════════════
+
+  // SOFT
   {
     id: 't5_soft_1',
     stage: 5,
     difficulty: 1,
-    text: 'נשק/י את הצוואר של {partner} לאט במשך 10 שניות.',
+    text: 'שב/י מול {partner}. סגור עיניים. הוא/היא יגע/תיגע בך בדיוק במקום אחד. נחש איפה - לפני שתפקח עיניים.',
     requiresConfirmation: true,
     intensity: 'soft',
   },
@@ -129,7 +152,7 @@ export const tasks: Task[] = [
     id: 't5_soft_2',
     stage: 5,
     difficulty: 1,
-    text: 'לחש/י משהו אינטימי לאוזן של {partner}.',
+    text: 'לחש לאוזן של {partner} דבר אחד שאתה רוצה שיקרה הלילה. בלי להסתכל בעיניים.',
     requiresConfirmation: true,
     intensity: 'soft',
   },
@@ -137,7 +160,7 @@ export const tasks: Task[] = [
     id: 't5_soft_3',
     stage: 5,
     difficulty: 2,
-    text: 'הוריד/י פריט לבוש אחד של {partner}. לאט.',
+    text: 'נשק את {partner} בדיוק במקום שאתה יודע שמשגע אותו/ה - אבל לא על הפה.',
     requiresConfirmation: true,
     intensity: 'soft',
   },
@@ -145,17 +168,17 @@ export const tasks: Task[] = [
     id: 't5_soft_4',
     stage: 5,
     difficulty: 2,
-    text: 'עשה/י עיסוי כתפיים ל{partner} במשך דקה. בלי להפסיק.',
+    text: 'הורד פריט לבוש אחד מ{partner}. לאט מאוד. בלי לדבר.',
     requiresConfirmation: true,
     intensity: 'soft',
   },
 
-  // Medium intensity
+  // MEDIUM
   {
     id: 't5_med_1',
     stage: 5,
     difficulty: 2,
-    text: 'תאר/י ל{partner} מה היית עושה לו/לה עכשיו אם לא היה פה משחק.',
+    text: 'תאר ל{partner} בדיוק מה היית עושה לו/לה עכשיו אם לא היה פה משחק. פרטים.',
     requiresConfirmation: true,
     intensity: 'medium',
   },
@@ -163,7 +186,7 @@ export const tasks: Task[] = [
     id: 't5_med_2',
     stage: 5,
     difficulty: 2,
-    text: 'נשק/י את {partner} כמו שנישקת אותו/ה בפעם הראשונה.',
+    text: 'נשק את {partner} כאילו זו הפעם הראשונה. לא כמו שאתה מנשק עכשיו - כמו שנישקת בהתחלה.',
     requiresConfirmation: true,
     intensity: 'medium',
   },
@@ -171,7 +194,7 @@ export const tasks: Task[] = [
     id: 't5_med_3',
     stage: 5,
     difficulty: 3,
-    text: 'תגיד/י ל{partner} איפה בדיוק את/ה רוצה שיגע/תיגע בך עכשיו.',
+    text: 'קח את היד של {partner} ושים אותה בדיוק במקום שאתה רוצה שהיא תהיה עכשיו.',
     requiresConfirmation: true,
     intensity: 'medium',
   },
@@ -179,17 +202,17 @@ export const tasks: Task[] = [
     id: 't5_med_4',
     stage: 5,
     difficulty: 3,
-    text: 'מצא/י נקודה בגוף של {partner} שאת/ה יודע/ת שמשגעת אותו/ה. תוכיח/י.',
+    text: 'יש לך 60 שניות להדליק את {partner} בלי לגעת. רק מילים.',
     requiresConfirmation: true,
     intensity: 'medium',
   },
 
-  // Spicy intensity
+  // SPICY
   {
     id: 't5_spicy_1',
     stage: 5,
     difficulty: 2,
-    text: 'הוריד/י שני פריטי לבוש של {partner}. באיזה סדר שאת/ה רוצה.',
+    text: 'הורד מ{partner} שני פריטי לבוש. את/ה בוחר/ת את הסדר.',
     requiresConfirmation: true,
     intensity: 'spicy',
   },
@@ -197,7 +220,7 @@ export const tasks: Task[] = [
     id: 't5_spicy_2',
     stage: 5,
     difficulty: 3,
-    text: 'תראה/י ל{partner} בדיוק מה את/ה רוצה עכשיו. בלי מילים.',
+    text: 'הראה ל{partner} בדיוק מה אתה רוצה עכשיו. בלי מילים כלל.',
     requiresConfirmation: true,
     intensity: 'spicy',
   },
@@ -205,7 +228,7 @@ export const tasks: Task[] = [
     id: 't5_spicy_3',
     stage: 5,
     difficulty: 3,
-    text: 'תעשה/י ל{partner} את מה שאת/ה יודע/ת שהוא/היא הכי אוהב/ת.',
+    text: 'עשה ל{partner} את מה שאתה יודע שהוא/היא הכי אוהב/ת. יש לך דקה להוכיח שאתה יודע.',
     requiresConfirmation: true,
     intensity: 'spicy',
   },
@@ -213,19 +236,21 @@ export const tasks: Task[] = [
     id: 't5_spicy_4',
     stage: 5,
     difficulty: 3,
-    text: 'המשחק יכול לחכות. תקחו 5 דקות. רק אתם.',
+    text: 'המשחק יכול לחכות. 5 דקות, רק אתם. תחזרו כשתהיו מוכנים.',
     requiresConfirmation: true,
     intensity: 'spicy',
   },
 ];
 
-// פונקציה להחלפת {partner} בשם האמיתי
+// פונקציות עזר
 export const formatTask = (task: Task, partnerName: string): string => {
   return task.text.replace(/{partner}/g, partnerName);
 };
 
-// קבלת משימות לשלב מסוים
-export const getTasksForStage = (stage: number, intensity?: 'soft' | 'medium' | 'spicy'): Task[] => {
+export const getTasksForStage = (
+  stage: number,
+  intensity?: 'soft' | 'medium' | 'spicy'
+): Task[] => {
   return tasks.filter((t) => {
     if (t.stage !== stage) return false;
     if (stage === 5 && intensity && t.intensity !== intensity) return false;
@@ -233,7 +258,6 @@ export const getTasksForStage = (stage: number, intensity?: 'soft' | 'medium' | 
   });
 };
 
-// קבלת משימה אקראית
 export const getRandomTask = (
   stage: number,
   difficulty: 1 | 2 | 3,
@@ -247,8 +271,6 @@ export const getRandomTask = (
     if (stage === 5 && intensity && t.intensity !== intensity) return false;
     return true;
   });
-
   if (available.length === 0) return null;
-
   return available[Math.floor(Math.random() * available.length)];
 };
