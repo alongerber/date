@@ -29,11 +29,6 @@
     "plugins": [
       "expo-font",
       "expo-haptics"
-    ],
-    "extra": {
-      "eas": {
-        "projectId": "zoogit-app"
-      }
-    }
+    ]
   }
 }
