@@ -1,9 +1,10 @@
 /**
  * אווטאר ד"ר חריף עם 4 הבעות ואנימציות
+ * תומך בתמונות עם fallback לגרדיאנט
  */
 
-import React, { useEffect } from 'react';
-import { View, StyleSheet } from 'react-native';
+import React, { useEffect, useState } from 'react';
+import { View, Image, StyleSheet, ImageSourcePropType } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -19,6 +20,28 @@ import { colors, shadows } from '../../theme';
 
 export type DrCharifExpression = 'listening' | 'speaking' | 'skeptical' | 'approving';
 
+// Try to load images - will fail gracefully if not present
+let EXPRESSIONS: Record<DrCharifExpression, ImageSourcePropType | null> = {
+  listening: null,
+  speaking: null,
+  skeptical: null,
+  approving: null,
+};
+
+// Try to require images (will be null if files don't exist)
+try {
+  EXPRESSIONS.listening = require('../../../assets/images/drCharif/charif_listening.png');
+} catch (e) {}
+try {
+  EXPRESSIONS.speaking = require('../../../assets/images/drCharif/charif_speaking.png');
+} catch (e) {}
+try {
+  EXPRESSIONS.skeptical = require('../../../assets/images/drCharif/charif_skeptical.png');
+} catch (e) {}
+try {
+  EXPRESSIONS.approving = require('../../../assets/images/drCharif/charif_approving.png');
+} catch (e) {}
+
 interface Props {
   expression?: DrCharifExpression;
   isSpeaking?: boolean;
@@ -30,6 +53,9 @@ export const DrCharifAvatar: React.FC<Props> = ({
   isSpeaking = false,
   size = 100,
 }) => {
+  const [imageError, setImageError] = useState(false);
+  const hasImage = EXPRESSIONS[expression] !== null && !imageError;
+
   // Animations
   const breatheAnim = useSharedValue(0);
   const speakingAnim = useSharedValue(0);
@@ -81,7 +107,7 @@ export const DrCharifAvatar: React.FC<Props> = ({
     ],
   }));
 
-  // Expression colors
+  // Expression colors for fallback gradient
   const getExpressionColors = (): [string, string, string] => {
     switch (expression) {
       case 'speaking':
@@ -98,10 +124,30 @@ export const DrCharifAvatar: React.FC<Props> = ({
 
   return (
     <View style={[styles.container, { width: size * 1.4, height: size * 1.4 }]}>
-      {/* Glow effect behind avatar */}
+      {/* Strong glow effect behind avatar */}
       <Animated.View
         style={[
-          styles.glow,
+          styles.glowContainer,
+          {
+            width: size * 1.6,
+            height: size * 1.6,
+            borderRadius: size * 0.8,
+          },
+          glowStyle,
+        ]}
+      >
+        <LinearGradient
+          colors={['rgba(114, 47, 55, 0.6)', 'rgba(114, 47, 55, 0.2)', 'transparent']}
+          style={styles.glow}
+          start={{ x: 0.5, y: 0.5 }}
+          end={{ x: 0.5, y: 1 }}
+        />
+      </Animated.View>
+
+      {/* Secondary glow for depth */}
+      <Animated.View
+        style={[
+          styles.secondaryGlow,
           {
             width: size * 1.3,
             height: size * 1.3,
@@ -134,16 +180,28 @@ export const DrCharifAvatar: React.FC<Props> = ({
           ]}
         />
 
-        {/* Avatar gradient */}
-        <LinearGradient
-          colors={getExpressionColors()}
-          style={[styles.avatar, { borderRadius: size / 2 }]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          {/* Inner glow */}
-          <View style={[styles.innerGlow, { borderRadius: size / 2 }]} />
-        </LinearGradient>
+        {/* Avatar - Image or Gradient Fallback */}
+        {hasImage && EXPRESSIONS[expression] ? (
+          <Image
+            source={EXPRESSIONS[expression]!}
+            style={[styles.avatarImage, { borderRadius: size / 2 }]}
+            resizeMode="cover"
+            onError={(e) => {
+              console.log('Image failed to load:', e.nativeEvent.error);
+              setImageError(true);
+            }}
+          />
+        ) : (
+          <LinearGradient
+            colors={getExpressionColors()}
+            style={[styles.avatar, { borderRadius: size / 2 }]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+          >
+            {/* Inner glow for fallback */}
+            <View style={[styles.innerGlow, { borderRadius: size / 2 }]} />
+          </LinearGradient>
+        )}
       </Animated.View>
 
       {/* Speaking indicator */}
@@ -190,7 +248,18 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  glowContainer: {
+    position: 'absolute',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   glow: {
+    flex: 1,
+    width: '100%',
+    height: '100%',
+    borderRadius: 999,
+  },
+  secondaryGlow: {
     position: 'absolute',
     overflow: 'hidden',
   },
@@ -203,6 +272,11 @@ const styles = StyleSheet.create({
     position: 'absolute',
     borderWidth: 2,
     borderColor: colors.accent.gold,
+  },
+  avatarImage: {
+    width: '100%',
+    height: '100%',
+    backgroundColor: colors.background.secondary,
   },
   avatar: {
     width: '100%',

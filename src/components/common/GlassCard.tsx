@@ -4,7 +4,8 @@
  */
 
 import React from 'react';
-import { View, StyleSheet, ViewStyle } from 'react-native';
+import { View, StyleSheet, ViewStyle, Platform } from 'react-native';
+import { BlurView } from 'expo-blur';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeIn } from 'react-native-reanimated';
 
@@ -26,30 +27,39 @@ export const GlassCard: React.FC<Props> = ({
   noPadding = false,
 }) => {
   const intensityMap = {
-    light: { opacity: 0.05 },
-    medium: { opacity: 0.08 },
-    strong: { opacity: 0.12 },
+    light: { blur: 40, opacity: 0.08, bg: 0.06 },
+    medium: { blur: 60, opacity: 0.12, bg: 0.08 },
+    strong: { blur: 80, opacity: 0.15, bg: 0.12 },
   };
 
-  const { opacity } = intensityMap[intensity];
+  const { blur, opacity, bg } = intensityMap[intensity];
 
   const Container = animated ? Animated.View : View;
   const animatedProps = animated ? { entering: FadeIn.duration(400) } : {};
 
   return (
-    <Container style={[styles.container, style]} {...animatedProps}>
-      {/* Gradient overlay */}
+    <Container style={[styles.container, { backgroundColor: `rgba(255, 255, 255, ${bg})` }, style]} {...animatedProps}>
+      {/* Blur background - iOS and Android */}
+      {Platform.OS !== 'web' && (
+        <BlurView
+          intensity={blur}
+          style={StyleSheet.absoluteFill}
+          tint="dark"
+        />
+      )}
+
+      {/* Gradient overlay for glass effect */}
       <LinearGradient
         colors={[
           `rgba(255, 255, 255, ${opacity})`,
-          `rgba(255, 255, 255, ${opacity * 0.5})`,
+          `rgba(255, 255, 255, ${opacity * 0.4})`,
         ]}
         style={StyleSheet.absoluteFill}
         start={{ x: 0, y: 0 }}
         end={{ x: 1, y: 1 }}
       />
 
-      {/* Border glow */}
+      {/* Border glow - stronger */}
       <View style={styles.borderOverlay} />
 
       {/* Content */}
@@ -64,14 +74,13 @@ const styles = StyleSheet.create({
   container: {
     borderRadius: borderRadius.lg,
     overflow: 'hidden',
-    backgroundColor: colors.glass.background,
     ...shadows.glass,
   },
   borderOverlay: {
     ...StyleSheet.absoluteFillObject,
     borderRadius: borderRadius.lg,
-    borderWidth: 1,
-    borderColor: colors.glass.border,
+    borderWidth: 1.5,
+    borderColor: 'rgba(255, 255, 255, 0.2)',
   },
   content: {
     padding: 24,
