@@ -21,8 +21,17 @@ import {
   I18nManager,
   Vibration,
   ScrollView,
+  Image,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
+
+// ===== DR. CHARIF IMAGES FROM GITHUB =====
+const DR_CHARIF_IMAGES = {
+  listening: 'https://raw.githubusercontent.com/alongerber/date/main/assets/images/charif_listening.png',
+  speaking: 'https://raw.githubusercontent.com/alongerber/date/main/assets/images/charif_speaking.png',
+  skeptical: 'https://raw.githubusercontent.com/alongerber/date/main/assets/images/charif_skeptical.png',
+  approving: 'https://raw.githubusercontent.com/alongerber/date/main/assets/images/charif_approving.png',
+};
 
 // Force RTL for Hebrew
 I18nManager.allowRTL(true);
@@ -78,10 +87,10 @@ const GlassCard = ({ children, style, intensity = 'medium' }) => {
   );
 };
 
-// ===== DR. CHARIF AVATAR WITH PREMIUM ANIMATIONS =====
-const DrCharifAvatar = ({ isSpeaking, size = 80, expression = 'listening' }) => {
+// ===== DR. CHARIF AVATAR WITH REAL IMAGE =====
+const DrCharifAvatar = ({ isSpeaking, size = 100, expression = 'listening' }) => {
   const pulseAnim = useRef(new Animated.Value(1)).current;
-  const glowAnim = useRef(new Animated.Value(0.3)).current;
+  const glowAnim = useRef(new Animated.Value(0.4)).current;
   const breatheAnim = useRef(new Animated.Value(1)).current;
   const dotAnims = [
     useRef(new Animated.Value(0.3)).current,
@@ -114,11 +123,11 @@ const DrCharifAvatar = ({ isSpeaking, size = 80, expression = 'listening' }) => 
     if (isSpeaking) {
       Animated.loop(
         Animated.sequence([
-          Animated.timing(pulseAnim, { toValue: 1.08, duration: 400, useNativeDriver: true }),
+          Animated.timing(pulseAnim, { toValue: 1.05, duration: 400, useNativeDriver: true }),
           Animated.timing(pulseAnim, { toValue: 1, duration: 400, useNativeDriver: true }),
         ])
       ).start();
-      Animated.timing(glowAnim, { toValue: 0.7, duration: 300, useNativeDriver: true }).start();
+      Animated.timing(glowAnim, { toValue: 0.8, duration: 300, useNativeDriver: true }).start();
 
       dotAnims.forEach((anim, i) => {
         setTimeout(() => {
@@ -133,7 +142,7 @@ const DrCharifAvatar = ({ isSpeaking, size = 80, expression = 'listening' }) => 
     } else {
       pulseAnim.stopAnimation();
       pulseAnim.setValue(1);
-      Animated.timing(glowAnim, { toValue: 0.3, duration: 500, useNativeDriver: true }).start();
+      Animated.timing(glowAnim, { toValue: 0.4, duration: 500, useNativeDriver: true }).start();
       dotAnims.forEach((anim) => {
         anim.stopAnimation();
         anim.setValue(0.3);
@@ -141,45 +150,46 @@ const DrCharifAvatar = ({ isSpeaking, size = 80, expression = 'listening' }) => 
     }
   }, [isSpeaking]);
 
-  const getExpressionColors = () => {
-    switch (expression) {
-      case 'speaking':
-        return [colors.accent.wine, colors.accent.wineLight, colors.accent.wine];
-      case 'approving':
-        return [colors.accent.gold, colors.accent.goldLight, colors.accent.gold];
-      case 'skeptical':
-        return [colors.accent.goldDark, colors.accent.wine, colors.accent.goldDark];
-      default:
-        return [colors.accent.wine, colors.accent.wineLight, colors.accent.wine];
-    }
-  };
+  const imageUrl = DR_CHARIF_IMAGES[expression] || DR_CHARIF_IMAGES.listening;
 
   return (
-    <View style={[styles.avatarContainer, { width: size * 1.5, height: size * 1.5 }]}>
-      {/* Glow effect */}
+    <View style={[styles.avatarContainer, { width: size * 1.4, height: size * 1.4 }]}>
+      {/* Glow effect behind avatar */}
       <Animated.View
         style={[
           styles.avatarGlow,
           {
-            width: size * 1.4,
-            height: size * 1.4,
-            borderRadius: size * 0.7,
+            width: size * 1.5,
+            height: size * 1.5,
+            borderRadius: size * 0.75,
             opacity: glowAnim,
             transform: [{ scale: breatheAnim }],
           },
         ]}
       />
-      {/* Main avatar */}
+      {/* Secondary glow */}
+      <Animated.View
+        style={[
+          styles.avatarGlowSecondary,
+          {
+            width: size * 1.3,
+            height: size * 1.3,
+            borderRadius: size * 0.65,
+            opacity: Animated.multiply(glowAnim, 0.5),
+            transform: [{ scale: breatheAnim }],
+          },
+        ]}
+      />
+      {/* Main avatar with image */}
       <Animated.View style={{ transform: [{ scale: Animated.multiply(pulseAnim, breatheAnim) }] }}>
-        <View style={[styles.avatarRing, { width: size + 4, height: size + 4, borderRadius: (size + 4) / 2 }]} />
-        <LinearGradient
-          colors={getExpressionColors()}
-          style={[styles.avatar, { width: size, height: size, borderRadius: size / 2 }]}
-          start={{ x: 0, y: 0 }}
-          end={{ x: 1, y: 1 }}
-        >
-          <View style={[styles.avatarInner, { borderRadius: size / 2 }]} />
-        </LinearGradient>
+        {/* Gold ring */}
+        <View style={[styles.avatarRing, { width: size + 6, height: size + 6, borderRadius: (size + 6) / 2 }]} />
+        {/* Character image */}
+        <Image
+          source={{ uri: imageUrl }}
+          style={[styles.avatarImage, { width: size, height: size, borderRadius: size / 2 }]}
+          resizeMode="cover"
+        />
       </Animated.View>
       {/* Speaking dots */}
       {isSpeaking && (
@@ -879,11 +889,36 @@ const styles = StyleSheet.create({
 
   // Avatar
   avatarContainer: { alignItems: 'center', justifyContent: 'center' },
-  avatarGlow: { position: 'absolute', backgroundColor: colors.accent.wine },
+  avatarGlow: {
+    position: 'absolute',
+    backgroundColor: colors.accent.wine,
+    shadowColor: colors.accent.wine,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 30,
+    elevation: 10,
+  },
+  avatarGlowSecondary: {
+    position: 'absolute',
+    backgroundColor: colors.accent.gold,
+    shadowColor: colors.accent.gold,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 8,
+  },
   avatarRing: {
     position: 'absolute',
-    borderWidth: 2,
+    borderWidth: 3,
     borderColor: colors.accent.gold,
+    shadowColor: colors.accent.gold,
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.6,
+    shadowRadius: 10,
+    elevation: 5,
+  },
+  avatarImage: {
+    backgroundColor: colors.background.secondary,
   },
   avatar: {
     alignItems: 'center',
@@ -898,8 +933,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.1)',
   },
   avatarSection: { marginBottom: 32 },
-  speakingDots: { position: 'absolute', bottom: -24, flexDirection: 'row', gap: 6 },
-  dot: { width: 6, height: 6, borderRadius: 3, backgroundColor: colors.accent.gold },
+  speakingDots: { position: 'absolute', bottom: -20, flexDirection: 'row', gap: 8 },
+  dot: { width: 8, height: 8, borderRadius: 4, backgroundColor: colors.accent.gold },
 
   // Text
   textContainer: { minHeight: 80, justifyContent: 'center' },
