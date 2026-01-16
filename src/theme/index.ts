@@ -1,18 +1,19 @@
 /**
- * Zoogit Theme - "Velvet Lounge"
+ * Zoogit Theme - "Velvet Lounge" Premium
  *
  * בר יין פרטי בשעה אחת בלילה.
- * וילונות קטיפה, תאורה חלשה, כוס יין שמשקפת אור נר.
- * יוקרה שקטה עם חום.
+ * Glass morphism, Gold accents, Soft gradients, Intimate lighting, Premium feel
  */
 
 export * from './colors';
 export * from './fonts';
 export * from './spacing';
+export * from './shadows';
 
 import { colors } from './colors';
 import { fontFamilies, fontSizes, lineHeights, fontWeights, typography } from './fonts';
-import { spacing, borderRadius, shadows, layout } from './spacing';
+import { spacing, borderRadius, layout } from './spacing';
+import { shadows } from './shadows';
 
 export const theme = {
   colors,

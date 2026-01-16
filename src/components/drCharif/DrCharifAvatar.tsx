@@ -1,113 +1,142 @@
 /**
- * אווטאר ד"ר חריף - עיגול זוהר עם אינדיקטור דיבור
+ * אווטאר ד"ר חריף עם 4 הבעות ואנימציות
  */
 
-import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Animated, Easing } from 'react-native';
+import React, { useEffect } from 'react';
+import { View, StyleSheet } from 'react-native';
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withRepeat,
+  withSequence,
+  withTiming,
+  Easing,
+  interpolate,
+} from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
-import { colors } from '@/theme/colors';
+
+import { colors, shadows } from '../../theme';
+
+export type DrCharifExpression = 'listening' | 'speaking' | 'skeptical' | 'approving';
 
 interface Props {
-  isSpeaking: boolean;
+  expression?: DrCharifExpression;
+  isSpeaking?: boolean;
   size?: number;
 }
 
 export const DrCharifAvatar: React.FC<Props> = ({
-  isSpeaking,
-  size = 80
+  expression = 'listening',
+  isSpeaking = false,
+  size = 100,
 }) => {
-  const pulseAnim = useRef(new Animated.Value(1)).current;
-  const glowAnim = useRef(new Animated.Value(0.3)).current;
-  const breatheAnim = useRef(new Animated.Value(1)).current;
+  // Animations
+  const breatheAnim = useSharedValue(0);
+  const speakingAnim = useSharedValue(0);
+  const glowAnim = useSharedValue(0.3);
 
-  // אנימציית נשימה קבועה
+  // Breathing animation (always running)
   useEffect(() => {
-    Animated.loop(
-      Animated.sequence([
-        Animated.timing(breatheAnim, {
-          toValue: 1.02,
-          duration: 3000,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-        Animated.timing(breatheAnim, {
-          toValue: 1,
-          duration: 3000,
-          easing: Easing.inOut(Easing.sin),
-          useNativeDriver: true,
-        }),
-      ])
-    ).start();
+    breatheAnim.value = withRepeat(
+      withSequence(
+        withTiming(1, { duration: 3000, easing: Easing.inOut(Easing.ease) }),
+        withTiming(0, { duration: 3000, easing: Easing.inOut(Easing.ease) })
+      ),
+      -1,
+      true
+    );
   }, []);
 
-  // אנימציית דיבור
+  // Speaking pulse animation
   useEffect(() => {
     if (isSpeaking) {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(pulseAnim, {
-            toValue: 1.08,
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-          Animated.timing(pulseAnim, {
-            toValue: 1,
-            duration: 400,
-            easing: Easing.inOut(Easing.ease),
-            useNativeDriver: true,
-          }),
-        ])
-      ).start();
-
-      Animated.timing(glowAnim, {
-        toValue: 0.8,
-        duration: 300,
-        useNativeDriver: true,
-      }).start();
+      speakingAnim.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 300 }),
+          withTiming(0, { duration: 300 })
+        ),
+        -1,
+        true
+      );
+      glowAnim.value = withTiming(0.7, { duration: 200 });
     } else {
-      pulseAnim.stopAnimation();
-      pulseAnim.setValue(1);
-      Animated.timing(glowAnim, {
-        toValue: 0.3,
-        duration: 500,
-        useNativeDriver: true,
-      }).start();
+      speakingAnim.value = withTiming(0, { duration: 200 });
+      glowAnim.value = withTiming(0.3, { duration: 300 });
     }
   }, [isSpeaking]);
 
-  const combinedScale = Animated.multiply(pulseAnim, breatheAnim);
+  // Animated styles
+  const containerStyle = useAnimatedStyle(() => {
+    const breatheScale = interpolate(breatheAnim.value, [0, 1], [1, 1.015]);
+    const speakingScale = interpolate(speakingAnim.value, [0, 1], [1, 1.04]);
+    return {
+      transform: [{ scale: breatheScale * speakingScale }],
+    };
+  });
+
+  const glowStyle = useAnimatedStyle(() => ({
+    opacity: glowAnim.value,
+    transform: [
+      { scale: interpolate(glowAnim.value, [0.3, 0.7], [1, 1.1]) },
+    ],
+  }));
+
+  // Expression colors
+  const getExpressionColors = (): [string, string, string] => {
+    switch (expression) {
+      case 'speaking':
+        return [colors.accent.wine, colors.accent.wineLight, colors.accent.wine];
+      case 'skeptical':
+        return [colors.accent.goldDark, colors.accent.wine, colors.accent.goldDark];
+      case 'approving':
+        return [colors.accent.gold, colors.accent.goldLight, colors.accent.gold];
+      case 'listening':
+      default:
+        return [colors.accent.wine, colors.accent.wineLight, colors.accent.wine];
+    }
+  };
 
   return (
-    <View style={[styles.container, { width: size, height: size }]}>
-      {/* Glow effect */}
+    <View style={[styles.container, { width: size * 1.4, height: size * 1.4 }]}>
+      {/* Glow effect behind avatar */}
       <Animated.View
         style={[
           styles.glow,
           {
-            width: size * 1.5,
-            height: size * 1.5,
-            borderRadius: size * 0.75,
-            opacity: glowAnim,
-            transform: [{ scale: combinedScale }],
+            width: size * 1.3,
+            height: size * 1.3,
+            borderRadius: size * 0.65,
           },
-        ]}
-      />
-
-      {/* Main avatar */}
-      <Animated.View
-        style={[
-          styles.avatarContainer,
-          {
-            width: size,
-            height: size,
-            borderRadius: size / 2,
-            transform: [{ scale: combinedScale }],
-          },
+          glowStyle,
         ]}
       >
         <LinearGradient
-          colors={[colors.accent.wine, colors.accent.wineLight, colors.accent.wine]}
+          colors={[colors.accent.gold, colors.accent.wine, 'transparent']}
+          style={StyleSheet.absoluteFill}
+          start={{ x: 0.5, y: 0 }}
+          end={{ x: 0.5, y: 1 }}
+        />
+      </Animated.View>
+
+      {/* Avatar container */}
+      <Animated.View
+        style={[
+          styles.avatarContainer,
+          { width: size, height: size, borderRadius: size / 2 },
+          containerStyle,
+        ]}
+      >
+        {/* Gold ring */}
+        <View
+          style={[
+            styles.ring,
+            { width: size + 4, height: size + 4, borderRadius: (size + 4) / 2 },
+          ]}
+        />
+
+        {/* Avatar gradient */}
+        <LinearGradient
+          colors={getExpressionColors()}
           style={[styles.avatar, { borderRadius: size / 2 }]}
           start={{ x: 0, y: 0 }}
           end={{ x: 1, y: 1 }}
@@ -117,7 +146,7 @@ export const DrCharifAvatar: React.FC<Props> = ({
         </LinearGradient>
       </Animated.View>
 
-      {/* Speaking indicator dots */}
+      {/* Speaking indicator */}
       {isSpeaking && (
         <View style={styles.speakingIndicator}>
           {[0, 1, 2].map((i) => (
@@ -129,38 +158,31 @@ export const DrCharifAvatar: React.FC<Props> = ({
   );
 };
 
+// Speaking indicator dots
 const SpeakingDot: React.FC<{ delay: number }> = ({ delay }) => {
-  const anim = useRef(new Animated.Value(0.3)).current;
+  const anim = useSharedValue(0);
 
   useEffect(() => {
     const timeout = setTimeout(() => {
-      Animated.loop(
-        Animated.sequence([
-          Animated.timing(anim, {
-            toValue: 1,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-          Animated.timing(anim, {
-            toValue: 0.3,
-            duration: 300,
-            useNativeDriver: true,
-          }),
-        ])
-      ).start();
+      anim.value = withRepeat(
+        withSequence(
+          withTiming(1, { duration: 300 }),
+          withTiming(0, { duration: 300 })
+        ),
+        -1,
+        true
+      );
     }, delay);
 
     return () => clearTimeout(timeout);
   }, [delay]);
 
-  return (
-    <Animated.View
-      style={[
-        styles.dot,
-        { opacity: anim, transform: [{ scale: anim }] },
-      ]}
-    />
-  );
+  const dotStyle = useAnimatedStyle(() => ({
+    opacity: interpolate(anim.value, [0, 1], [0.3, 1]),
+    transform: [{ scale: interpolate(anim.value, [0, 1], [0.8, 1.2]) }],
+  }));
+
+  return <Animated.View style={[styles.dot, dotStyle]} />;
 };
 
 const styles = StyleSheet.create({
@@ -170,21 +192,23 @@ const styles = StyleSheet.create({
   },
   glow: {
     position: 'absolute',
-    backgroundColor: colors.accent.wine,
+    overflow: 'hidden',
   },
   avatarContainer: {
-    shadowColor: colors.accent.gold,
-    shadowOffset: { width: 0, height: 0 },
-    shadowOpacity: 0.5,
-    shadowRadius: 20,
-    elevation: 10,
-  },
-  avatar: {
-    flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
+    ...shadows.goldGlow,
+  },
+  ring: {
+    position: 'absolute',
     borderWidth: 2,
     borderColor: colors.accent.gold,
+  },
+  avatar: {
+    width: '100%',
+    height: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   innerGlow: {
     position: 'absolute',
@@ -196,7 +220,7 @@ const styles = StyleSheet.create({
   },
   speakingIndicator: {
     position: 'absolute',
-    bottom: -20,
+    bottom: 0,
     flexDirection: 'row',
     gap: 6,
   },
