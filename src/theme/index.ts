@@ -1,5 +1,5 @@
 /**
- * Zoogit Theme - "Velvet Lounge" Premium
+ * Date Tower Theme - "Velvet Lounge" Premium
  *
  * בר יין פרטי בשעה אחת בלילה.
  * Glass morphism, Gold accents, Soft gradients, Intimate lighting, Premium feel

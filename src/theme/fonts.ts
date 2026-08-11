@@ -1,5 +1,5 @@
 /**
- * Zoogit Typography System
+ * Date Tower Typography System
  *
  * פונטים: Heebo לעברית, Playfair Display לכותרות
  */

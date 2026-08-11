@@ -69,14 +69,16 @@ export const POINTS = {
   quizCorrect: 5,
 } as const;
 
+// קומות המגדל - Date Tower
+// כל קומה עוסקת בזווית אחרת של הקשר
 export const STAGES = [
-  { id: 1, name: 'רגע לפני שנפגשנו', items: 8, questionRatio: 0.7 },
-  { id: 2, name: 'הרמת כוסית', items: 8, questionRatio: 0.4 },
-  { id: 3, name: 'דברים שלא אומרים בקול', items: 8, questionRatio: 0.5 },
-  { id: 4, name: 'מלחמת הגירסאות', items: 8, questionRatio: 0.8 },
-  { id: 5, name: 'טמפרטורה עולה', items: 8, questionRatio: 0.3 },
-  { id: 6, name: 'החידון הזוגי', items: 24, questionRatio: 1.0 },
-  { id: 7, name: 'הסיום', items: 0, questionRatio: 0 },
+  { id: 1, name: 'אש וקרח', titleEn: 'Ice & Fire', items: 8, questionRatio: 0.7 },
+  { id: 2, name: 'משחקי ראש', titleEn: 'Mind Games', items: 8, questionRatio: 0.4 },
+  { id: 3, name: 'ריווינד', titleEn: 'Rewind', items: 8, questionRatio: 0.5 },
+  { id: 4, name: 'אזור אפור', titleEn: 'Moral Zone', items: 8, questionRatio: 0.8 },
+  { id: 5, name: 'צלילה עמוקה', titleEn: 'Deep Dive', items: 8, questionRatio: 0.3 },
+  { id: 6, name: 'החידון', titleEn: 'Deep Dive Quiz', items: 24, questionRatio: 1.0 },
+  { id: 7, name: 'עתיד מושלם', titleEn: 'Future Perfect', items: 0, questionRatio: 0 },
 ] as const;
 
 // Store State

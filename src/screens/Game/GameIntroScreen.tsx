@@ -1,7 +1,7 @@
 /**
  * Game Intro Screen
  *
- * מסך פתיחה של המשחק עם הקדמה של ד"ר חריף
+ * מסך פתיחה של המשחק עם הקדמה של ז'אן־פייר
  */
 
 import React, { useState } from 'react';

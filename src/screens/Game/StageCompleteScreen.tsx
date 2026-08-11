@@ -1,7 +1,7 @@
 /**
  * Stage Complete Screen
  *
- * מסך סיום שלב עם סיכום וטקסט ד"ר חריף
+ * מסך סיום שלב עם סיכום וטקסט ז'אן־פייר
  */
 
 import React, { useState } from 'react';
@@ -66,7 +66,7 @@ export const StageCompleteScreen: React.FC = () => {
       <View style={styles.container}>
         {/* Stage complete header */}
         <View style={styles.header}>
-          <Text style={styles.completedText}>סיום שלב {stageId}</Text>
+          <Text style={styles.completedText}>סיימתם את קומה {stageId}</Text>
           <Text style={styles.stageTitle}>{stageInfo?.name}</Text>
         </View>
 
@@ -98,7 +98,7 @@ export const StageCompleteScreen: React.FC = () => {
         {showButton && (
           <View style={styles.buttonContainer}>
             <Text style={styles.nextStageText}>
-              הבא: {nextStageInfo?.name || 'החידון הזוגי'}
+              הקומה הבאה: {nextStageInfo?.name || 'החידון'}
             </Text>
             <Button
               title="להמשיך"

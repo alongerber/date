@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "זוגיט",
-    "slug": "zoogit",
+    "name": "Date Tower",
+    "slug": "date-tower",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -14,14 +14,14 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.zoogit.app"
+      "bundleIdentifier": "com.datetower.app"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#12081C"
       },
-      "package": "com.zoogit.app"
+      "package": "com.datetower.app"
     },
     "web": {
       "favicon": "./assets/favicon.png"

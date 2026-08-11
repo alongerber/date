@@ -1,5 +1,5 @@
 /**
- * Zoogit Spacing System
+ * Date Tower Spacing System
  *
  * מרווחים ומימדים לעיצוב עקבי
  */
