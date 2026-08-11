@@ -84,7 +84,7 @@ export const DrCharifSpeech: React.FC<Props> = ({
 
   return (
     <GlassCard intensity="medium" style={styles.container}>
-      <Text style={styles.label}>ד״ר חריף:</Text>
+      <Text style={styles.label}>ז'אן־פייר:</Text>
 
       <Animated.View style={[styles.textContainer, animatedStyle]}>
         <TypewriterText

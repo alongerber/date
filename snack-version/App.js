@@ -1,11 +1,11 @@
 /**
- * זוגיט - Zoogit Couples Dating App
+ * Date Tower - Couples Dating App
  * SUPER PREMIUM VERSION - "Wine Bar at 1AM"
  *
  * ⚠️ IMPORTANT: If you see dependency errors,
  * Click "Add dependency" button at the bottom of the screen!
  *
- * @author Zoogit Team
+ * @author Date Tower Team
  */
 
 import React, { useState, useEffect, useRef, useCallback, useMemo } from 'react';
@@ -514,7 +514,7 @@ const DrCharifText = ({ lines, onComplete, typingSpeed = 35, lineDelay = 800 }) 
 // ===== GLASS SPEECH BOX (Fixed Height 160px) =====
 const GlassSpeechBox = ({ children }) => (
   <GlassCard style={styles.speechBox} intensity="medium" withShimmer>
-    <Text style={styles.drCharifLabel}>ד״ר חריף:</Text>
+    <Text style={styles.drCharifLabel}>ז'אן־פייר:</Text>
     <View style={styles.speechContent}>
       {children}
     </View>
@@ -593,7 +593,7 @@ const drCharifTexts = {
   gameIntro: [
     'התיישבתם? יש יין?',
     'טוב.',
-    'אני חריף.',
+    "אני ז'אן־פייר.",
     'שלושים שנה אני יושב מול זוגות.',
     'שבאים ואומרים "אנחנו בסדר".',
     'שקר.',

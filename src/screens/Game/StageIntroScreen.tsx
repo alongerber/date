@@ -1,7 +1,7 @@
 /**
  * Stage Intro Screen
  *
- * מסך פתיחת שלב עם הסבר של ד"ר חריף
+ * מסך פתיחת שלב עם הסבר של ז'אן־פייר
  */
 
 import React, { useState } from 'react';
@@ -57,11 +57,18 @@ export const StageIntroScreen: React.FC = () => {
   return (
     <ScreenContainer>
       <View style={styles.container}>
-        {/* Stage number indicator */}
+        {/* Floor indicator */}
         <View style={styles.header}>
           <View style={styles.stageIndicator}>
             <Text style={styles.stageNumber}>{stageId}</Text>
           </View>
+          <Text style={styles.floorLabel}>קומה {stageId}</Text>
+          {stageInfo && (
+            <Text style={styles.floorName}>
+              {stageInfo.name}
+              {stageInfo.titleEn ? ` · ${stageInfo.titleEn}` : ''}
+            </Text>
+          )}
         </View>
 
         <View style={styles.content}>
@@ -107,6 +114,18 @@ const styles = StyleSheet.create({
   stageNumber: {
     ...typography.h3,
     color: colors.text.primary,
+  },
+  floorLabel: {
+    ...typography.caption,
+    color: colors.text.gold,
+    marginTop: spacing.sm,
+    letterSpacing: 2,
+  },
+  floorName: {
+    ...typography.h3,
+    color: colors.text.primary,
+    marginTop: spacing.xs,
+    textAlign: 'center',
   },
   content: {
     flex: 1,

@@ -1,7 +1,7 @@
 /**
  * Results Screen - סיום
  *
- * מסך סיום עם סיכום וטקסט ד"ר חריף
+ * מסך סיום עם סיכום וטקסט ז'אן־פייר
  */
 
 import React, { useState } from 'react';
@@ -44,7 +44,7 @@ export const ResultsScreen: React.FC = () => {
     await Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     try {
       await Share.share({
-        message: `שיחקנו ב"זוגיט" 🍷\n${player1.name}: ${player1.score} נקודות\n${player2.name}: ${player2.score} נקודות\n\nהערב שלא תספרו עליו בקבוצת הורים`,
+        message: `שיחקנו ב־Date Tower 🗼🍷\n${player1.name}: ${player1.score} נקודות\n${player2.name}: ${player2.score} נקודות\n\nשש קומות. ערב אחד שלא תספרו עליו בקבוצת הורים.`,
       });
     } catch (error) {
       console.log('Share error:', error);

@@ -73,7 +73,7 @@ export const DrCharifMessage: React.FC<DrCharifMessageProps> = ({
         {/* Header with Dr. Charif indicator */}
         <View style={styles.header}>
           <View style={styles.indicator}>
-            <Text style={styles.indicatorText}>ד״ר חריף</Text>
+            <Text style={styles.indicatorText}>ז'אן־פייר</Text>
           </View>
           <View style={styles.decorLine} />
         </View>

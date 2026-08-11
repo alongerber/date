@@ -1,7 +1,7 @@
 /**
  * Input Component
  *
- * שדה קלט עם עיצוב ייחודי לזוגיט
+ * שדה קלט עם עיצוב ייחודי לDate Tower
  */
 
 import React, { useState } from 'react';
